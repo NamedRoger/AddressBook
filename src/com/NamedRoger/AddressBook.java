@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AddressBook {
-    private HashMap<String,String> contacts = new HashMap<>();
+    private HashMap<String,Contact> contacts = new HashMap<>();
 
     public void load() throws IOException {
         String separator = FileSystems.getDefault().getSeparator();
@@ -23,9 +23,12 @@ public class AddressBook {
         }
 
         lines = (ArrayList<String>) Files.readAllLines(path);
-        for (var contact : lines){
-            var infoContact = contact.split(",");
-            contacts.put(infoContact[0].trim(),infoContact[1].trim());
+
+        for (var line : lines){
+            var contactInfo = line.split(",");
+            var contact = new Contact(contactInfo[1],contactInfo[0]);
+
+            contacts.put(contact.getTelefono(),contact);
         }
     }
 
@@ -42,20 +45,27 @@ public class AddressBook {
         Files.write(path,saveContacts);
     }
 
-    public void list() throws IOException {
+    public void list() {
         for(var contact : contacts.entrySet()){
             System.out.println(String.format("Numero: %s, Nombre: %s",
-                    contact.getKey(),contact.getValue()));
+                    contact.getKey(),contact.getValue().getNombre()));
         }
     }
 
-    public void create(String nombre, String telefono) throws IOException {
-        contacts.put(telefono,nombre);
+    public void create(String nombre, String telefono) throws Exception {
+        if(contacts.containsKey(telefono)){
+            throw new Exception("El contacto ya existe");
+        }
+        Contact contact = new Contact(nombre,telefono);
+        contacts.put(telefono,contact);
         save();
         load();
     }
 
-    public void delete(String telefono) throws IOException {
+    public void delete(String telefono) throws Exception {
+        if(contacts.containsKey(telefono)){
+            throw new Exception("No existe este telefono");
+        }
         var p = contacts.remove(telefono);
         save();
         load();
