@@ -46,10 +46,16 @@ public class AddressBook {
     }
 
     public void list() {
-        for(var contact : contacts.entrySet()){
-            System.out.println(String.format("Numero: %s, Nombre: %s",
-                    contact.getKey(),contact.getValue().getNombre()));
+        if(contacts.size() < 1){
+            System.out.println("No hay contactos aun");
         }
+        else{
+            for(var contact : contacts.entrySet()){
+                System.out.println(String.format("Numero: %s, Nombre: %s",
+                        contact.getKey(),contact.getValue().getNombre()));
+            }
+        }
+
     }
 
     public void create(String nombre, String telefono) throws Exception {
