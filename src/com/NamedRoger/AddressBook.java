@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AddressBook {
-    private HashMap<String,Contact> contacts = new HashMap<>();
+    private HashMap<String,String> contacts = new HashMap<>();
 
     public void load() throws IOException {
         String separator = FileSystems.getDefault().getSeparator();
@@ -26,9 +26,8 @@ public class AddressBook {
 
         for (var line : lines){
             var contactInfo = line.split(",");
-            var contact = new Contact(contactInfo[1],contactInfo[0]);
 
-            contacts.put(contact.getTelefono(),contact);
+            contacts.put(contactInfo[0].trim(),contactInfo[1].trim());
         }
     }
 
@@ -45,14 +44,15 @@ public class AddressBook {
         Files.write(path,saveContacts);
     }
 
-    public void list() {
+    public void list() throws IOException {
+        load();
         if(contacts.size() < 1){
             System.out.println("No hay contactos aun");
         }
         else{
             for(var contact : contacts.entrySet()){
                 System.out.println(String.format("Numero: %s, Nombre: %s",
-                        contact.getKey(),contact.getValue().getNombre()));
+                        contact.getKey(),contact.getValue()));
             }
         }
 
@@ -62,8 +62,8 @@ public class AddressBook {
         if(contacts.containsKey(telefono)){
             throw new Exception("El contacto ya existe");
         }
-        Contact contact = new Contact(nombre,telefono);
-        contacts.put(telefono,contact);
+
+        contacts.put(telefono.trim(),nombre.trim());
         save();
         load();
     }

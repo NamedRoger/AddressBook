@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
+    static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) throws Exception {
-        Scanner sc = new Scanner(System.in);
         MenuAgenda menuAgenda = new MenuAgenda(sc);
         boolean running;
         do {
@@ -37,7 +37,10 @@ public class Main {
 
 
         }while (running);
+
     }
+
+
 
     public static void isValid(int op) throws Exception {
         if(op < 1 || op > 4){

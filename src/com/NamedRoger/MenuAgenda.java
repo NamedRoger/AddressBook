@@ -25,14 +25,15 @@ public class MenuAgenda {
     }
 
     public void menuAgregar() throws Exception {
-        System.out.printf("Nombre: ");
-        var nombre = sc.next();
+        Scanner in = new Scanner(System.in);
 
-        System.out.printf("Numero: ");
-        var telefono = sc.next();
+        System.out.println("Nombre: ");
+        String nombre = in.nextLine();
+
+        System.out.println("Telefono: ");
+        var telefono = in.nextLine();
 
         addressBook.create(nombre,telefono);
-        System.out.println();
     }
 
     public void menuEliminiar() throws Exception {
@@ -43,8 +44,14 @@ public class MenuAgenda {
         System.out.println();
     }
 
-    public void menuLista() {
+    public void menuLista() throws IOException {
         addressBook.list();
         System.out.println();
+    }
+
+    private String getNombre(){
+        var nombre = sc.nextLine();
+        System.out.println("Nombre");
+        return nombre;
     }
 }
